@@ -18,9 +18,9 @@ public class ProgressController(IProgressService progressService) : ControllerBa
         return Created();
     }
 
-    [HttpGet("members/{memberId:guid}/chart")]
+    [HttpGet("members/{memberId:int}/chart")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
-    public async Task<IActionResult> GetProgressChartData(Guid memberId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProgressChartData(int memberId, CancellationToken cancellationToken)
     {
         var data = await progressService.GetProgressChartDataAsync(memberId, cancellationToken);
         return Ok(data);

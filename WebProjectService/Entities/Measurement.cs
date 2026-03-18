@@ -2,7 +2,7 @@ namespace WebProjectService.Entities;
 
 public class Measurement : BaseEntity
 {
-    public Guid MemberId { get; set; }
+    public int MemberId { get; set; }
     public decimal Weight { get; set; }
     public decimal Height { get; set; }
     public decimal BodyFatPercentage { get; set; }

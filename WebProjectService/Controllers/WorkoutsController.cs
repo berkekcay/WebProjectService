@@ -27,9 +27,9 @@ public class WorkoutsController(IWorkoutService workoutService) : ControllerBase
         return CreatedAtAction(nameof(GetProgramDetail), new { workoutProgramId = createdProgram.Id }, createdProgram);
     }
 
-    [HttpGet("programs/{workoutProgramId:guid}")]
+    [HttpGet("programs/{workoutProgramId:int}")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
-    public async Task<IActionResult> GetProgramDetail(Guid workoutProgramId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProgramDetail(int workoutProgramId, CancellationToken cancellationToken)
     {
         var detail = await workoutService.GetWorkoutProgramDetailAsync(workoutProgramId, cancellationToken);
         return detail is null ? NotFound() : Ok(detail);
@@ -51,10 +51,10 @@ public class WorkoutsController(IWorkoutService workoutService) : ControllerBase
         return CreatedAtAction(nameof(GetMemberSessions), new { memberId = createdSession.MemberId }, createdSession);
     }
 
-    [HttpPut("sessions/{workoutSessionId:guid}/complete")]
+    [HttpPut("sessions/{workoutSessionId:int}/complete")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)}")]
     public async Task<IActionResult> CompleteSession(
-        Guid workoutSessionId,
+        int workoutSessionId,
         [FromBody] CompleteWorkoutSessionRequest request,
         CancellationToken cancellationToken)
     {
@@ -67,9 +67,9 @@ public class WorkoutsController(IWorkoutService workoutService) : ControllerBase
         return Ok(session);
     }
 
-    [HttpGet("members/{memberId:guid}/sessions")]
+    [HttpGet("members/{memberId:int}/sessions")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
-    public async Task<IActionResult> GetMemberSessions(Guid memberId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMemberSessions(int memberId, CancellationToken cancellationToken)
     {
         var sessions = await workoutService.GetMemberWorkoutSessionsAsync(memberId, cancellationToken);
         return Ok(sessions);

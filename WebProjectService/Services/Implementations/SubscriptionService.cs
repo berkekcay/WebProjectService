@@ -27,7 +27,7 @@ public class SubscriptionService(AppDbContext context) : ISubscriptionService
         return expiredSubscriptions.Count;
     }
 
-    public async Task RenewSubscriptionAsync(Guid memberId, Guid membershipPlanId, CancellationToken cancellationToken)
+    public async Task RenewSubscriptionAsync(int memberId, int membershipPlanId, CancellationToken cancellationToken)
     {
         await CreateOrRenewSubscriptionAsync(memberId, membershipPlanId, false, cancellationToken);
     }
@@ -75,7 +75,7 @@ public class SubscriptionService(AppDbContext context) : ISubscriptionService
         };
     }
 
-    public async Task RenewSubscriptionByUserIdAsync(Guid userId, Guid membershipPlanId, bool isPaid, CancellationToken cancellationToken)
+    public async Task RenewSubscriptionByUserIdAsync(int userId, int membershipPlanId, bool isPaid, CancellationToken cancellationToken)
     {
         var member = await context.Members.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken)
             ?? throw new KeyNotFoundException("Member profile not found for user.");
@@ -83,7 +83,7 @@ public class SubscriptionService(AppDbContext context) : ISubscriptionService
         await CreateOrRenewSubscriptionAsync(member.Id, membershipPlanId, isPaid, cancellationToken);
     }
 
-    public async Task AssignSubscriptionByTrainerAsync(Guid trainerUserId, Guid memberId, Guid membershipPlanId, bool isPaid, CancellationToken cancellationToken)
+    public async Task AssignSubscriptionByTrainerAsync(int trainerUserId, int memberId, int membershipPlanId, bool isPaid, CancellationToken cancellationToken)
     {
         var trainerExists = await context.Trainers.AsNoTracking().AnyAsync(x => x.UserId == trainerUserId, cancellationToken);
         if (!trainerExists)
@@ -94,7 +94,7 @@ public class SubscriptionService(AppDbContext context) : ISubscriptionService
         await CreateOrRenewSubscriptionAsync(memberId, membershipPlanId, isPaid, cancellationToken);
     }
 
-    private async Task CreateOrRenewSubscriptionAsync(Guid memberId, Guid membershipPlanId, bool isPaid, CancellationToken cancellationToken)
+    private async Task CreateOrRenewSubscriptionAsync(int memberId, int membershipPlanId, bool isPaid, CancellationToken cancellationToken)
     {
         var plan = await context.MembershipPlans.FirstOrDefaultAsync(x => x.Id == membershipPlanId, cancellationToken)
             ?? throw new KeyNotFoundException("Membership plan not found.");

@@ -8,7 +8,7 @@ namespace WebProjectService.Services.Implementations;
 
 public class MemberService(AppDbContext context) : IMemberService
 {
-    public async Task<MemberResponse?> GetMemberAsync(Guid memberId, CancellationToken cancellationToken)
+    public async Task<MemberResponse?> GetMemberAsync(int memberId, CancellationToken cancellationToken)
     {
         return await context.Members
             .AsNoTracking()
@@ -25,12 +25,12 @@ public class MemberService(AppDbContext context) : IMemberService
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task FreezeMembershipAsync(Guid memberId, CancellationToken cancellationToken)
+    public async Task FreezeMembershipAsync(int memberId, CancellationToken cancellationToken)
     {
         await UpdateMembershipStatusAsync(memberId, MembershipStatus.Frozen, cancellationToken);
     }
 
-    public async Task UpdateMembershipStatusAsync(Guid memberId, MembershipStatus membershipStatus, CancellationToken cancellationToken)
+    public async Task UpdateMembershipStatusAsync(int memberId, MembershipStatus membershipStatus, CancellationToken cancellationToken)
     {
         var member = await context.Members.FirstOrDefaultAsync(x => x.Id == memberId, cancellationToken)
             ?? throw new KeyNotFoundException("Member not found.");

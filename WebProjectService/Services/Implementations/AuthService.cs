@@ -99,7 +99,7 @@ public class AuthService(AppDbContext context, IOptions<JwtOptions> jwtOptions) 
 
         context.Users.Add(user);
 
-        Guid? trainerId = null;
+        int? trainerId = null;
         if (request.Role == Role.Trainer)
         {
             var trainer = new Trainer
@@ -119,7 +119,7 @@ public class AuthService(AppDbContext context, IOptions<JwtOptions> jwtOptions) 
         return CreateToken(user, null, trainerId);
     }
 
-    private AuthResponse CreateToken(User user, Guid? memberId, Guid? trainerId)
+    private AuthResponse CreateToken(User user, int? memberId, int? trainerId)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

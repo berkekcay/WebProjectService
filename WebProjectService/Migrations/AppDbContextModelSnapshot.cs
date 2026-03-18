@@ -24,9 +24,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.Exercise", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -59,9 +61,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.Measurement", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Arm")
                         .HasPrecision(8, 2)
@@ -92,8 +96,8 @@ namespace WebProjectService.Migrations
                     b.Property<DateTime>("MeasurementDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MemberId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -115,9 +119,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.Member", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BloodType")
                         .IsRequired()
@@ -149,8 +155,8 @@ namespace WebProjectService.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -162,9 +168,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.MembershipPlan", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("CanFreeze")
                         .HasColumnType("bit");
@@ -200,9 +208,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -231,9 +241,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.Subscription", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -247,11 +259,11 @@ namespace WebProjectService.Migrations
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("MemberId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("MembershipPlanId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MembershipPlanId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -270,9 +282,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.Trainer", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bio")
                         .IsRequired()
@@ -299,8 +313,8 @@ namespace WebProjectService.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -312,9 +326,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -357,9 +373,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.WorkoutProgram", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -370,15 +388,15 @@ namespace WebProjectService.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("MemberId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProgramName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TrainerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("TrainerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -394,11 +412,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.WorkoutProgramExercise", b =>
                 {
-                    b.Property<Guid>("WorkoutProgramId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("WorkoutProgramId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ExerciseId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -412,9 +430,11 @@ namespace WebProjectService.Migrations
 
             modelBuilder.Entity("WebProjectService.Entities.WorkoutSession", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CompletedDate")
                         .HasColumnType("datetime2");
@@ -428,8 +448,8 @@ namespace WebProjectService.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("MemberId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Notes")
                         .IsRequired()
@@ -441,14 +461,14 @@ namespace WebProjectService.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("TrainerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("TrainerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("WorkoutProgramId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("WorkoutProgramId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

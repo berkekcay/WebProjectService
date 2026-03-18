@@ -22,7 +22,7 @@ public class NotificationService(AppDbContext context, ILogger<NotificationServi
         }
     }
 
-    public Task NotifyUpcomingWorkoutAsync(Guid memberId, string workoutName, DateTime scheduledDate, CancellationToken cancellationToken)
+    public Task NotifyUpcomingWorkoutAsync(int memberId, string workoutName, DateTime scheduledDate, CancellationToken cancellationToken)
     {
         logger.LogInformation(
             "Sending workout reminder to member {MemberId} for {WorkoutName} at {ScheduledDate}",

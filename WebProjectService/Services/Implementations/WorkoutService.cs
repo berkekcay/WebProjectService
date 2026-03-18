@@ -9,7 +9,7 @@ namespace WebProjectService.Services.Implementations;
 
 public class WorkoutService(AppDbContext context) : IWorkoutService
 {
-    public async Task<WorkoutProgram> CreateWorkoutProgramAsync(WorkoutProgram workoutProgram, IEnumerable<Guid> exerciseIds, CancellationToken cancellationToken)
+    public async Task<WorkoutProgram> CreateWorkoutProgramAsync(WorkoutProgram workoutProgram, IEnumerable<int> exerciseIds, CancellationToken cancellationToken)
     {
         var ids = exerciseIds.ToList();
         var exercises = await context.Exercises.Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
@@ -40,7 +40,7 @@ public class WorkoutService(AppDbContext context) : IWorkoutService
         return exercise;
     }
 
-    public async Task<WorkoutProgramDetailDto?> GetWorkoutProgramDetailAsync(Guid workoutProgramId, CancellationToken cancellationToken)
+    public async Task<WorkoutProgramDetailDto?> GetWorkoutProgramDetailAsync(int workoutProgramId, CancellationToken cancellationToken)
     {
         return await context.WorkoutPrograms
             .AsNoTracking()
@@ -110,7 +110,7 @@ public class WorkoutService(AppDbContext context) : IWorkoutService
         return MapSession(session);
     }
 
-    public async Task<WorkoutSessionResponse> CompleteWorkoutSessionAsync(Guid workoutSessionId, int durationMinutes, string notes, CancellationToken cancellationToken)
+    public async Task<WorkoutSessionResponse> CompleteWorkoutSessionAsync(int workoutSessionId, int durationMinutes, string notes, CancellationToken cancellationToken)
     {
         var session = await context.WorkoutSessions.FirstOrDefaultAsync(x => x.Id == workoutSessionId, cancellationToken)
             ?? throw new KeyNotFoundException("Workout session not found.");
@@ -127,7 +127,7 @@ public class WorkoutService(AppDbContext context) : IWorkoutService
         return MapSession(session);
     }
 
-    public async Task<IReadOnlyCollection<WorkoutSessionResponse>> GetMemberWorkoutSessionsAsync(Guid memberId, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<WorkoutSessionResponse>> GetMemberWorkoutSessionsAsync(int memberId, CancellationToken cancellationToken)
     {
         return await context.WorkoutSessions
             .AsNoTracking()

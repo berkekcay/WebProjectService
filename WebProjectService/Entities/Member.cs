@@ -4,7 +4,7 @@ namespace WebProjectService.Entities;
 
 public class Member : BaseEntity
 {
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
     public DateTime DateOfBirth { get; set; }
     public Gender Gender { get; set; } = Gender.Unspecified;
     public string EmergencyContactName { get; set; } = string.Empty;

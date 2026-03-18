@@ -28,7 +28,7 @@ public class ProgressService(AppDbContext context) : IProgressService
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<ProgressDataPoint>> GetProgressChartDataAsync(Guid memberId, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ProgressDataPoint>> GetProgressChartDataAsync(int memberId, CancellationToken cancellationToken)
     {
         return await context.Measurements
             .AsNoTracking()

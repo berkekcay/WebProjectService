@@ -4,9 +4,9 @@ namespace WebProjectService.Entities;
 
 public class WorkoutSession : BaseEntity
 {
-    public Guid MemberId { get; set; }
-    public Guid? TrainerId { get; set; }
-    public Guid? WorkoutProgramId { get; set; }
+    public int MemberId { get; set; }
+    public int? TrainerId { get; set; }
+    public int? WorkoutProgramId { get; set; }
     public DateTime ScheduledDate { get; set; }
     public DateTime? CompletedDate { get; set; }
     public int DurationMinutes { get; set; }
