@@ -29,7 +29,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__DefaultConnection: Server=sqlserver,1433;Database=WebProjectServiceDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true
+      ConnectionStrings__DefaultConnection: Server=sqlserver,1433;Database=${DB_NAME:-WebProjectServiceDbInt};User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true
       Jwt__Key: ${JWT_KEY}
       Jwt__Issuer: WebProjectService
       Jwt__Audience: WebProjectServiceClients
