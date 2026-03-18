@@ -90,15 +90,12 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-    // Use migrations when available; otherwise create schema directly for first-run Docker setups.
-    if (dbContext.Database.GetMigrations().Any())
+    if (!dbContext.Database.GetMigrations().Any())
     {
-        dbContext.Database.Migrate();
+        throw new InvalidOperationException("No EF Core migrations were found. Create and include migrations before startup.");
     }
-    else
-    {
-        dbContext.Database.EnsureCreated();
-    }
+
+    dbContext.Database.Migrate();
 }
 
 
