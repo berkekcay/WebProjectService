@@ -87,6 +87,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Trainer>()
             .Property(x => x.SalaryAmount)
             .HasPrecision(10, 2);
+
+        modelBuilder.Entity<WorkoutProgram>()
+    .HasOne(x => x.Trainer)
+    .WithMany(x => x.WorkoutPrograms) // Trainer entity'sinde bu listenin olduðundan emin ol
+    .HasForeignKey(x => x.TrainerId)
+    .OnDelete(DeleteBehavior.Restrict); // Burasý 'Restrict' veya 'NoAction' olmalý
+
+        // Eðer Member silindiðinde program da silinsin istiyorsan burasý Cascade kalabilir
+        modelBuilder.Entity<WorkoutProgram>()
+            .HasOne(x => x.Member)
+            .WithMany() // Veya x.WorkoutPrograms
+            .HasForeignKey(x => x.MemberId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
