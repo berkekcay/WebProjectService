@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebProjectService.Migrations
 {
     /// <inheritdoc />
-    public partial class FixMultipleCascadePaths : Migration
+    public partial class InitialSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,7 +54,7 @@ namespace WebProjectService.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -134,7 +134,7 @@ namespace WebProjectService.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,10 +146,10 @@ namespace WebProjectService.Migrations
                     Weight = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
                     Height = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
                     BodyFatPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    Chest = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Waist = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Arm = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Leg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Chest = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
+                    Waist = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
+                    Arm = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
+                    Leg = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
                     MeasurementDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -188,7 +188,7 @@ namespace WebProjectService.Migrations
                         column: x => x.MemberId,
                         principalTable: "Members",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Subscriptions_MembershipPlans_MembershipPlanId",
                         column: x => x.MembershipPlanId,
@@ -206,7 +206,6 @@ namespace WebProjectService.Migrations
                     TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProgramName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DifficultyLevel = table.Column<int>(type: "int", nullable: false),
-                    MemberId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
@@ -219,12 +218,7 @@ namespace WebProjectService.Migrations
                         column: x => x.MemberId,
                         principalTable: "Members",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WorkoutPrograms_Members_MemberId1",
-                        column: x => x.MemberId1,
-                        principalTable: "Members",
-                        principalColumn: "Id");
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WorkoutPrograms_Trainers_TrainerId",
                         column: x => x.TrainerId,
@@ -283,19 +277,19 @@ namespace WebProjectService.Migrations
                         column: x => x.MemberId,
                         principalTable: "Members",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WorkoutSessions_Trainers_TrainerId",
                         column: x => x.TrainerId,
                         principalTable: "Trainers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WorkoutSessions_WorkoutPrograms_WorkoutProgramId",
                         column: x => x.WorkoutProgramId,
                         principalTable: "WorkoutPrograms",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -340,11 +334,6 @@ namespace WebProjectService.Migrations
                 name: "IX_WorkoutPrograms_MemberId",
                 table: "WorkoutPrograms",
                 column: "MemberId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkoutPrograms_MemberId1",
-                table: "WorkoutPrograms",
-                column: "MemberId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkoutPrograms_TrainerId",

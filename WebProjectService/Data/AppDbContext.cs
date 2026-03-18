@@ -35,7 +35,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasOne(x => x.User)
             .WithOne(x => x.TrainerProfile)
             .HasForeignKey<Trainer>(x => x.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<WorkoutProgramExercise>()
             .HasKey(x => new { x.WorkoutProgramId, x.ExerciseId });
@@ -54,19 +54,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasOne(x => x.Member)
             .WithMany()
             .HasForeignKey(x => x.MemberId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<WorkoutSession>()
             .HasOne(x => x.Trainer)
             .WithMany()
             .HasForeignKey(x => x.TrainerId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<WorkoutSession>()
             .HasOne(x => x.WorkoutProgram)
             .WithMany()
             .HasForeignKey(x => x.WorkoutProgramId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Measurement>()
             .Property(x => x.Weight)
@@ -80,6 +80,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .Property(x => x.BodyFatPercentage)
             .HasPrecision(5, 2);
 
+        modelBuilder.Entity<Measurement>()
+            .Property(x => x.Chest)
+            .HasPrecision(8, 2);
+
+        modelBuilder.Entity<Measurement>()
+            .Property(x => x.Waist)
+            .HasPrecision(8, 2);
+
+        modelBuilder.Entity<Measurement>()
+            .Property(x => x.Arm)
+            .HasPrecision(8, 2);
+
+        modelBuilder.Entity<Measurement>()
+            .Property(x => x.Leg)
+            .HasPrecision(8, 2);
+
         modelBuilder.Entity<MembershipPlan>()
             .Property(x => x.MonthlyPrice)
             .HasPrecision(10, 2);
@@ -89,17 +105,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasPrecision(10, 2);
 
         modelBuilder.Entity<WorkoutProgram>()
-    .HasOne(x => x.Trainer)
-    .WithMany(x => x.WorkoutPrograms) // Trainer entity'sinde bu listenin olduðundan emin ol
-    .HasForeignKey(x => x.TrainerId)
-    .OnDelete(DeleteBehavior.Restrict); // Burasý 'Restrict' veya 'NoAction' olmalý
+            .HasOne(x => x.Trainer)
+            .WithMany(x => x.WorkoutPrograms)
+            .HasForeignKey(x => x.TrainerId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        // Eðer Member silindiðinde program da silinsin istiyorsan burasý Cascade kalabilir
         modelBuilder.Entity<WorkoutProgram>()
             .HasOne(x => x.Member)
-            .WithMany() // Veya x.WorkoutPrograms
+            .WithMany(x => x.WorkoutPrograms)
             .HasForeignKey(x => x.MemberId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Subscription>()
+            .HasOne(x => x.Member)
+            .WithMany(x => x.Subscriptions)
+            .HasForeignKey(x => x.MemberId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Product>()
+            .Property(x => x.Price)
+            .HasPrecision(10, 2);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -64,14 +64,16 @@ namespace WebProjectService.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Arm")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<decimal>("BodyFatPercentage")
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
 
                     b.Property<decimal>("Chest")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -84,7 +86,8 @@ namespace WebProjectService.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Leg")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<DateTime>("MeasurementDate")
                         .HasColumnType("datetime2");
@@ -96,7 +99,8 @@ namespace WebProjectService.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Waist")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(8, 2)
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<decimal>("Weight")
                         .HasPrecision(8, 2)
@@ -211,7 +215,8 @@ namespace WebProjectService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -368,9 +373,6 @@ namespace WebProjectService.Migrations
                     b.Property<Guid>("MemberId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("MemberId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ProgramName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -384,8 +386,6 @@ namespace WebProjectService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MemberId");
-
-                    b.HasIndex("MemberId1");
 
                     b.HasIndex("TrainerId");
 
@@ -488,7 +488,7 @@ namespace WebProjectService.Migrations
                     b.HasOne("WebProjectService.Entities.Member", "Member")
                         .WithMany("Subscriptions")
                         .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebProjectService.Entities.MembershipPlan", "MembershipPlan")
@@ -507,7 +507,7 @@ namespace WebProjectService.Migrations
                     b.HasOne("WebProjectService.Entities.User", "User")
                         .WithOne("TrainerProfile")
                         .HasForeignKey("WebProjectService.Entities.Trainer", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -516,14 +516,10 @@ namespace WebProjectService.Migrations
             modelBuilder.Entity("WebProjectService.Entities.WorkoutProgram", b =>
                 {
                     b.HasOne("WebProjectService.Entities.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebProjectService.Entities.Member", null)
                         .WithMany("WorkoutPrograms")
-                        .HasForeignKey("MemberId1");
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("WebProjectService.Entities.Trainer", "Trainer")
                         .WithMany("WorkoutPrograms")
@@ -560,18 +556,18 @@ namespace WebProjectService.Migrations
                     b.HasOne("WebProjectService.Entities.Member", "Member")
                         .WithMany()
                         .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebProjectService.Entities.Trainer", "Trainer")
                         .WithMany()
                         .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebProjectService.Entities.WorkoutProgram", "WorkoutProgram")
                         .WithMany()
                         .HasForeignKey("WorkoutProgramId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Member");
 
