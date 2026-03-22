@@ -5,11 +5,6 @@ Gym management backend service built with ASP.NET Core and Entity Framework Core
 ## Submission Quick Links
 - Backend GitHub Repository URL: `https://github.com/berkekcay/WebProjectService`
 - Frontend GitHub Repository URL: `PASTE_FRONTEND_GITHUB_URL_HERE`
-- Presentation File (PDF or PPTX): `presentation/PASTE_FILE_NAME_HERE.pdf`
-- Report: [REPORT.md](REPORT.md)
-- Team Responsibilities: [responsibilities/2309111157.md](responsibilities/2309111157.md)
-- Frontend Integration Guide: [FRONTEND_REPO_GUIDE.md](FRONTEND_REPO_GUIDE.md)
-- Screenshots: [screenshots](screenshots)
 
 ## Requirement Coverage Matrix (Instructor-Approved Scope)
 | Requirement | Status | Notes |
