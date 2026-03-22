@@ -5,7 +5,7 @@ This backend is designed to be consumed by a separate frontend repository.
 ## 1. Frontend Repository Metadata
 - Frontend repo URL: PASTE_FRONTEND_GITHUB_URL_HERE
 - Suggested stack: React + Vite
-- API base URL (local): http://localhost:8080
+- API base URL (local): http://64.226.125.254
 
 ## 2. Required Frontend Environment Variables
 Create a `.env` file in the frontend repo with:
