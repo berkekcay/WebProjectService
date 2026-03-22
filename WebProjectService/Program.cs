@@ -1,10 +1,12 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebProjectService.Data;
 using WebProjectService.Entities.Enums;
+using WebProjectService.Middleware;
 using WebProjectService.Services;
 using WebProjectService.Services.Implementations;
 using WebProjectService.Services.Interfaces;
@@ -12,6 +14,23 @@ using WebProjectService.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var validationProblem = new ValidationProblemDetails(context.ModelState)
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "Request validation failed.",
+            Type = "https://httpstatuses.com/400"
+        };
+
+        validationProblem.Extensions["traceId"] = context.HttpContext.TraceIdentifier;
+
+        return new BadRequestObjectResult(validationProblem);
+    };
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -108,6 +127,7 @@ using (var scope = app.Services.CreateScope())
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

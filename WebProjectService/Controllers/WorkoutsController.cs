@@ -37,8 +37,16 @@ public class WorkoutsController(IWorkoutService workoutService) : ControllerBase
 
     [HttpPost("exercises")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)}")]
-    public async Task<IActionResult> AddExercise([FromBody] Exercise exercise, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddExercise([FromBody] AddExerciseRequest request, CancellationToken cancellationToken)
     {
+        var exercise = new Exercise
+        {
+            Name = request.Name,
+            MuscleGroup = request.MuscleGroup,
+            Description = request.Description,
+            VideoUrl = request.VideoUrl
+        };
+
         var createdExercise = await workoutService.AddExerciseLibraryItemAsync(exercise, cancellationToken);
         return Ok(createdExercise);
     }
