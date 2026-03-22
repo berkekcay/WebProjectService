@@ -10,6 +10,14 @@ namespace WebProjectService.Controllers;
 [Route("api/[controller]")]
 public class MembersController(IMemberService memberService) : ControllerBase
 {
+    [HttpGet]
+    [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)}")]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var members = await memberService.GetMembersAsync(cancellationToken);
+        return Ok(members);
+    }
+
     [HttpGet("{memberId:int}")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
     public async Task<IActionResult> GetById(int memberId, CancellationToken cancellationToken)

@@ -11,6 +11,14 @@ namespace WebProjectService.Controllers;
 [Route("api/[controller]")]
 public class SubscriptionsController(ISubscriptionService subscriptionService) : ControllerBase
 {
+    [HttpGet("members/{memberId:int}")]
+    [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
+    public async Task<IActionResult> GetMemberSubscriptions(int memberId, CancellationToken cancellationToken)
+    {
+        var subscriptions = await subscriptionService.GetMemberSubscriptionsAsync(memberId, cancellationToken);
+        return Ok(subscriptions);
+    }
+
     [HttpGet("plans")]
     [AllowAnonymous]
     public async Task<IActionResult> GetPlans(CancellationToken cancellationToken)

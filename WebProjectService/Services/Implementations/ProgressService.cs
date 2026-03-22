@@ -42,4 +42,26 @@ public class ProgressService(AppDbContext context) : IProgressService
             })
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<IReadOnlyCollection<MeasurementResponse>> GetMeasurementsAsync(int memberId, CancellationToken cancellationToken)
+    {
+        return await context.Measurements
+            .AsNoTracking()
+            .Where(x => x.MemberId == memberId)
+            .OrderByDescending(x => x.MeasurementDate)
+            .Select(x => new MeasurementResponse
+            {
+                Id = x.Id,
+                MemberId = x.MemberId,
+                MeasurementDate = x.MeasurementDate,
+                Weight = x.Weight,
+                Height = x.Height,
+                BodyFatPercentage = x.BodyFatPercentage,
+                Chest = x.Chest,
+                Waist = x.Waist,
+                Arm = x.Arm,
+                Leg = x.Leg
+            })
+            .ToListAsync(cancellationToken);
+    }
 }

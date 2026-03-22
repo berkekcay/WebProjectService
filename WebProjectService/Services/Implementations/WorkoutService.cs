@@ -67,6 +67,63 @@ public class WorkoutService(AppDbContext context) : IWorkoutService
             .FirstOrDefaultAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<WorkoutProgramDetailDto>> GetWorkoutProgramsAsync(
+        int? memberId,
+        int? trainerId,
+        CancellationToken cancellationToken)
+    {
+        var query = context.WorkoutPrograms.AsNoTracking().AsQueryable();
+
+        if (memberId.HasValue)
+        {
+            query = query.Where(x => x.MemberId == memberId.Value);
+        }
+
+        if (trainerId.HasValue)
+        {
+            query = query.Where(x => x.TrainerId == trainerId.Value);
+        }
+
+        return await query
+            .OrderByDescending(x => x.Id)
+            .Select(x => new WorkoutProgramDetailDto
+            {
+                ProgramId = x.Id,
+                MemberId = x.MemberId,
+                TrainerId = x.TrainerId,
+                ProgramName = x.ProgramName,
+                DifficultyLevel = x.DifficultyLevel,
+                Exercises = x.ProgramExercises
+                    .OrderBy(pe => pe.Order)
+                    .Select(pe => new ExerciseDto
+                    {
+                        Id = pe.Exercise.Id,
+                        Name = pe.Exercise.Name,
+                        MuscleGroup = pe.Exercise.MuscleGroup,
+                        Description = pe.Exercise.Description,
+                        VideoUrl = pe.Exercise.VideoUrl
+                    })
+                    .ToList()
+            })
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<ExerciseDto>> GetExercisesAsync(CancellationToken cancellationToken)
+    {
+        return await context.Exercises
+            .AsNoTracking()
+            .OrderBy(x => x.Name)
+            .Select(x => new ExerciseDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                MuscleGroup = x.MuscleGroup,
+                Description = x.Description,
+                VideoUrl = x.VideoUrl
+            })
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<WorkoutSessionResponse> ScheduleWorkoutSessionAsync(ScheduleWorkoutSessionRequest request, CancellationToken cancellationToken)
     {
         var memberExists = await context.Members.AsNoTracking().AnyAsync(x => x.Id == request.MemberId, cancellationToken);
@@ -132,6 +189,46 @@ public class WorkoutService(AppDbContext context) : IWorkoutService
         return await context.WorkoutSessions
             .AsNoTracking()
             .Where(x => x.MemberId == memberId)
+            .OrderByDescending(x => x.ScheduledDate)
+            .Select(x => new WorkoutSessionResponse
+            {
+                Id = x.Id,
+                MemberId = x.MemberId,
+                TrainerId = x.TrainerId,
+                WorkoutProgramId = x.WorkoutProgramId,
+                ScheduledDate = x.ScheduledDate,
+                CompletedDate = x.CompletedDate,
+                DurationMinutes = x.DurationMinutes,
+                Notes = x.Notes,
+                Status = x.Status
+            })
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<WorkoutSessionResponse>> GetWorkoutSessionsAsync(
+        int? memberId,
+        int? trainerId,
+        WorkoutSessionStatus? status,
+        CancellationToken cancellationToken)
+    {
+        var query = context.WorkoutSessions.AsNoTracking().AsQueryable();
+
+        if (memberId.HasValue)
+        {
+            query = query.Where(x => x.MemberId == memberId.Value);
+        }
+
+        if (trainerId.HasValue)
+        {
+            query = query.Where(x => x.TrainerId == trainerId.Value);
+        }
+
+        if (status.HasValue)
+        {
+            query = query.Where(x => x.Status == status.Value);
+        }
+
+        return await query
             .OrderByDescending(x => x.ScheduledDate)
             .Select(x => new WorkoutSessionResponse
             {

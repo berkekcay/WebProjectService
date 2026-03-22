@@ -5,6 +5,7 @@ namespace WebProjectService.Services.Interfaces;
 
 public interface IMemberService
 {
+    Task<IReadOnlyCollection<MemberListItemResponse>> GetMembersAsync(CancellationToken cancellationToken);
     Task<MemberResponse?> GetMemberAsync(int memberId, CancellationToken cancellationToken);
     Task FreezeMembershipAsync(int memberId, CancellationToken cancellationToken);
     Task UpdateMembershipStatusAsync(int memberId, MembershipStatus membershipStatus, CancellationToken cancellationToken);

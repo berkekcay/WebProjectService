@@ -6,5 +6,6 @@ namespace WebProjectService.Services.Interfaces;
 public interface IProgressService
 {
     Task AddMeasurementAsync(MeasurementAddRequest request, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<MeasurementResponse>> GetMeasurementsAsync(int memberId, CancellationToken cancellationToken);
     Task<IReadOnlyCollection<ProgressDataPoint>> GetProgressChartDataAsync(int memberId, CancellationToken cancellationToken);
 }

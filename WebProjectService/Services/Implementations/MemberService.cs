@@ -8,6 +8,26 @@ namespace WebProjectService.Services.Implementations;
 
 public class MemberService(AppDbContext context) : IMemberService
 {
+    public async Task<IReadOnlyCollection<MemberListItemResponse>> GetMembersAsync(CancellationToken cancellationToken)
+    {
+        return await context.Members
+            .AsNoTracking()
+            .OrderBy(x => x.User.Username)
+            .Select(x => new MemberListItemResponse
+            {
+                MemberId = x.Id,
+                UserId = x.UserId,
+                Name = x.User.Username,
+                Email = x.User.Email,
+                Status = x.MembershipStatus,
+                PlanName = x.Subscriptions
+                    .OrderByDescending(s => s.EndDate)
+                    .Select(s => s.MembershipPlan.Title)
+                    .FirstOrDefault() ?? "No Plan"
+            })
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<MemberResponse?> GetMemberAsync(int memberId, CancellationToken cancellationToken)
     {
         return await context.Members

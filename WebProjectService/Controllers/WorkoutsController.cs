@@ -11,6 +11,17 @@ namespace WebProjectService.Controllers;
 [Route("api/[controller]")]
 public class WorkoutsController(IWorkoutService workoutService) : ControllerBase
 {
+    [HttpGet("programs")]
+    [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
+    public async Task<IActionResult> GetPrograms(
+        [FromQuery] int? memberId,
+        [FromQuery] int? trainerId,
+        CancellationToken cancellationToken)
+    {
+        var programs = await workoutService.GetWorkoutProgramsAsync(memberId, trainerId, cancellationToken);
+        return Ok(programs);
+    }
+
     [HttpPost("programs")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)}")]
     public async Task<IActionResult> CreateProgram([FromBody] CreateWorkoutProgramRequest request, CancellationToken cancellationToken)
@@ -51,6 +62,14 @@ public class WorkoutsController(IWorkoutService workoutService) : ControllerBase
         return Ok(createdExercise);
     }
 
+    [HttpGet("exercises")]
+    [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
+    public async Task<IActionResult> GetExercises(CancellationToken cancellationToken)
+    {
+        var exercises = await workoutService.GetExercisesAsync(cancellationToken);
+        return Ok(exercises);
+    }
+
     [HttpPost("sessions")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)}")]
     public async Task<IActionResult> ScheduleSession([FromBody] ScheduleWorkoutSessionRequest request, CancellationToken cancellationToken)
@@ -80,6 +99,18 @@ public class WorkoutsController(IWorkoutService workoutService) : ControllerBase
     public async Task<IActionResult> GetMemberSessions(int memberId, CancellationToken cancellationToken)
     {
         var sessions = await workoutService.GetMemberWorkoutSessionsAsync(memberId, cancellationToken);
+        return Ok(sessions);
+    }
+
+    [HttpGet("sessions")]
+    [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)}")]
+    public async Task<IActionResult> GetSessions(
+        [FromQuery] int? memberId,
+        [FromQuery] int? trainerId,
+        [FromQuery] WorkoutSessionStatus? status,
+        CancellationToken cancellationToken)
+    {
+        var sessions = await workoutService.GetWorkoutSessionsAsync(memberId, trainerId, status, cancellationToken);
         return Ok(sessions);
     }
 }

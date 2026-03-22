@@ -10,6 +10,14 @@ namespace WebProjectService.Controllers;
 [Route("api/[controller]")]
 public class ProgressController(IProgressService progressService) : ControllerBase
 {
+    [HttpGet("members/{memberId:int}/measurements")]
+    [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
+    public async Task<IActionResult> GetMeasurements(int memberId, CancellationToken cancellationToken)
+    {
+        var measurements = await progressService.GetMeasurementsAsync(memberId, cancellationToken);
+        return Ok(measurements);
+    }
+
     [HttpPost("measurements")]
     [Authorize(Roles = $"{nameof(Role.Admin)},{nameof(Role.Trainer)},{nameof(Role.Member)}")]
     public async Task<IActionResult> AddMeasurement([FromBody] MeasurementAddRequest request, CancellationToken cancellationToken)

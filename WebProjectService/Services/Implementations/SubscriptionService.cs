@@ -50,6 +50,25 @@ public class SubscriptionService(AppDbContext context) : ISubscriptionService
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<MemberSubscriptionResponse>> GetMemberSubscriptionsAsync(int memberId, CancellationToken cancellationToken)
+    {
+        return await context.Subscriptions
+            .AsNoTracking()
+            .Where(x => x.MemberId == memberId)
+            .OrderByDescending(x => x.EndDate)
+            .Select(x => new MemberSubscriptionResponse
+            {
+                SubscriptionId = x.Id,
+                MemberId = x.MemberId,
+                MembershipPlanId = x.MembershipPlanId,
+                MembershipPlanTitle = x.MembershipPlan.Title,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                IsPaid = x.IsPaid
+            })
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<MembershipPlanResponse> CreateMembershipPlanAsync(MembershipPlanCreateRequest request, CancellationToken cancellationToken)
     {
         var plan = new MembershipPlan
