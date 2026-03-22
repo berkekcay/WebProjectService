@@ -19,12 +19,12 @@ public class AuthService(AppDbContext context, IOptions<JwtOptions> jwtOptions) 
 {
     private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
-    public async Task<AuthResponse> RegisterAsync(MemberCreateRequest request, CancellationToken cancellationToken)
+    public async Task<bool> RegisterAsync(MemberCreateRequest request, CancellationToken cancellationToken)
     {
         var existingUser = await context.Users.AsNoTracking().AnyAsync(x => x.Email == request.Email, cancellationToken);
         if (existingUser)
         {
-            throw new InvalidOperationException("Email is already in use.");
+            return false;
         }
 
         var user = new User
@@ -51,7 +51,7 @@ public class AuthService(AppDbContext context, IOptions<JwtOptions> jwtOptions) 
         context.Members.Add(member);
         await context.SaveChangesAsync(cancellationToken);
 
-        return CreateToken(user, member.Id, null);
+        return true;
     }
 
     public async Task<AuthResponse?> LoginAsync(string email, string password, CancellationToken cancellationToken)

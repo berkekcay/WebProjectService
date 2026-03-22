@@ -6,7 +6,7 @@ namespace WebProjectService.Services.Interfaces;
 
 public interface IAuthService
 {
-    Task<AuthResponse> RegisterAsync(MemberCreateRequest request, CancellationToken cancellationToken);
+    Task<bool> RegisterAsync(MemberCreateRequest request, CancellationToken cancellationToken);
     Task<AuthResponse?> LoginAsync(string email, string password, CancellationToken cancellationToken);
     Task<AuthResponse> CreateStaffUserAsync(CreateStaffUserRequest request, CancellationToken cancellationToken);
 }
