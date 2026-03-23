@@ -72,11 +72,6 @@ This backend exposes REST endpoints that are consumed by that frontend.
    ```
 3. API is available on `http://localhost:8080`.
 
-## Screenshots
-The screenshots below are placeholders in this environment and should be replaced with real captures from your running app before final submission.
-
-![API Swagger Home](screenshots/01-api-overview.svg)
-![Authentication Flow](screenshots/02-auth-flow.svg)
 
 ## Presentation Checklist
 - Keep presentation duration near **3:00**.
